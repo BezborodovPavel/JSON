@@ -101,9 +101,7 @@
                         <outlet property="activityIndicator" destination="7a0-lm-XKD" id="aLw-Xh-0In"/>
                         <outlet property="firstNameField" destination="EdC-MH-UG1" id="54L-rL-D6C"/>
                         <outlet property="secondNameField" destination="Zah-YP-gzC" id="xBd-n7-CH7"/>
-                        <segue destination="wAX-ay-OaG" kind="popoverPresentation" identifier="segueToResult" destinationCreationSelector="segueToResult" popoverAnchorView="8bC-Xf-vdC" id="VFV-cI-ei0">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
+                        <segue destination="wAX-ay-OaG" kind="presentation" identifier="segueToResult" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="mwu-hW-2RY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -115,35 +113,45 @@
             <objects>
                 <viewController id="wAX-ay-OaG" customClass="ResultViewContoller" customModule="JSON" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Eiy-77-OvF">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03v-MX-ctm">
-                                <rect key="frame" x="180" y="407.5" width="54" height="27"/>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
-                                <color key="textColor" red="0.1763820394" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="AXf-NN-Vq1">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03v-MX-ctm">
+                                <rect key="frame" x="20" y="430" width="374" height="36"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gb9-sH-0jb"/>
-                        <color key="backgroundColor" red="1" green="0.74774134020000005" blue="0.79579060869999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="03v-MX-ctm" firstAttribute="leading" secondItem="Gb9-sH-0jb" secondAttribute="leading" constant="20" id="KTd-yc-rJ2"/>
+                            <constraint firstItem="Gb9-sH-0jb" firstAttribute="trailing" secondItem="03v-MX-ctm" secondAttribute="trailing" constant="20" id="PfR-Ww-FXG"/>
                             <constraint firstItem="03v-MX-ctm" firstAttribute="centerX" secondItem="Eiy-77-OvF" secondAttribute="centerX" id="cCE-Jb-9Xk"/>
+                            <constraint firstItem="AXf-NN-Vq1" firstAttribute="trailing" secondItem="Gb9-sH-0jb" secondAttribute="trailing" id="d5d-Se-4t3"/>
+                            <constraint firstAttribute="bottom" secondItem="AXf-NN-Vq1" secondAttribute="bottom" id="enU-yZ-Io5"/>
+                            <constraint firstItem="AXf-NN-Vq1" firstAttribute="top" secondItem="Eiy-77-OvF" secondAttribute="top" id="rOd-ar-Q9D"/>
+                            <constraint firstItem="AXf-NN-Vq1" firstAttribute="leading" secondItem="Gb9-sH-0jb" secondAttribute="leading" id="rla-5F-kDE"/>
                             <constraint firstItem="03v-MX-ctm" firstAttribute="centerY" secondItem="Eiy-77-OvF" secondAttribute="centerY" id="z31-e5-oMh"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="h86-vy-5UI"/>
                     <connections>
                         <outlet property="resultLabel" destination="03v-MX-ctm" id="I4F-Rk-U5F"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bpL-68-jIM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="880" y="92"/>
+            <point key="canvasLocation" x="879.71014492753625" y="91.741071428571431"/>
         </scene>
     </scenes>
     <resources>
         <image name="Man" width="1000" height="985"/>
         <image name="Woman" width="448.5" height="571.5"/>
+        <image name="background" width="1124" height="749.5"/>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

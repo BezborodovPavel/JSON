@@ -15,6 +15,12 @@ class ResultViewContoller: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        resultLabel.text = resultString
+        resultLabel.text = "Ваша совместимость оценивается на \(resultString ?? "0")%"
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super .touchesBegan(touches, with: event)
+        dismiss(animated: true)
+    }
+
 }

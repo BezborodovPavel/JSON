@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class RapidApi {
     
@@ -43,20 +44,26 @@ class RapidApi {
             "X-RapidAPI-Host": "love-calculator.p.rapidapi.com",
             "X-RapidAPI-Key": apiKey
         ]
-        
     }
     
-    func sendRequest(closure:  @escaping (ResponseResult) -> ()) {
+    func sendRequest(closure:  @escaping (ResponseResult?) -> ()) {
         
         getRawData { rawData in
             
-            guard let responeResult = self.decodeDataToResponseResult(data: rawData) else {return}
+            if rawData == nil {
+                closure(nil)
+                return
+            }
+            
+            guard let responeResult = self.decodeDataToResponseResult(data: rawData!) else {
+                closure(nil)
+                return}
             closure(responeResult)
             
         }
     }
     
-    private func getRawData(closure:  @escaping (Data) -> ()) {
+    private func getRawData(closure:  @escaping (Data?) -> ()) {
         
         guard let urlAPI = urlAPI else {return}
         
@@ -70,12 +77,11 @@ class RapidApi {
         request.allHTTPHeaderFields = headers
     
         URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { ( data, response, error) -> Void in
-            guard let rawData = data else {
+            if data == nil {
                 print(error?.localizedDescription ?? "Some error, without description")
-                return
             }
             
-            closure(rawData)
+            closure(data)
             
         }).resume()
     }

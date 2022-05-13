@@ -13,6 +13,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var secondNameField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var result: ResponseResult?
+    
     @IBAction func calculateButtonPress() {
      
         guard checkNames() else {return}
@@ -23,17 +25,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
         view.alpha = 0.5
         api.sendRequest { responseResult in
             
-            self.result = responseResult
-            print(responseResult.result)
+            if responseResult == nil {
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                    self.view.alpha = 1
+                    self.showAlert(title: "Ошибка", message: "Не удалось соединиться с сервером, попробуйте позднее", titleButton: "Ок")
+                }
+                return
+            }
+            self.result = responseResult!
             DispatchQueue.main.async {
                 self.performSegue(withIdentifier: "segueToResult", sender: nil)
+                self.activityIndicator.stopAnimating()
+                self.view.alpha = 1
             }
-            
         }
-    
     }
-    
-    var result: ResponseResult?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,14 +51,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         decorateElemets()
         setupToolBar()
         
-        // Do any additional setup after loading the view.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let resultContoller = segue.destination as? ResultViewContoller else {return}
         
-        resultContoller.resultString = result?.result ?? ""
-        
+        resultContoller.resultString = result?.percentage ?? ""        
     }
 
     @objc private func hintSelected(sender: UIBarButtonItem) {
