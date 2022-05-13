@@ -128,11 +128,10 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gb9-sH-0jb"/>
                         <constraints>
-                            <constraint firstItem="03v-MX-ctm" firstAttribute="leading" secondItem="Gb9-sH-0jb" secondAttribute="leading" constant="20" id="KTd-yc-rJ2"/>
-                            <constraint firstItem="Gb9-sH-0jb" firstAttribute="trailing" secondItem="03v-MX-ctm" secondAttribute="trailing" constant="20" id="PfR-Ww-FXG"/>
-                            <constraint firstItem="03v-MX-ctm" firstAttribute="centerX" secondItem="Eiy-77-OvF" secondAttribute="centerX" id="cCE-Jb-9Xk"/>
+                            <constraint firstItem="03v-MX-ctm" firstAttribute="leading" secondItem="Gb9-sH-0jb" secondAttribute="leading" constant="20" id="XPQ-T7-duY"/>
                             <constraint firstItem="AXf-NN-Vq1" firstAttribute="trailing" secondItem="Gb9-sH-0jb" secondAttribute="trailing" id="d5d-Se-4t3"/>
                             <constraint firstAttribute="bottom" secondItem="AXf-NN-Vq1" secondAttribute="bottom" id="enU-yZ-Io5"/>
+                            <constraint firstItem="Gb9-sH-0jb" firstAttribute="trailing" secondItem="03v-MX-ctm" secondAttribute="trailing" constant="20" id="paZ-uY-2QR"/>
                             <constraint firstItem="AXf-NN-Vq1" firstAttribute="top" secondItem="Eiy-77-OvF" secondAttribute="top" id="rOd-ar-Q9D"/>
                             <constraint firstItem="AXf-NN-Vq1" firstAttribute="leading" secondItem="Gb9-sH-0jb" secondAttribute="leading" id="rla-5F-kDE"/>
                             <constraint firstItem="03v-MX-ctm" firstAttribute="centerY" secondItem="Eiy-77-OvF" secondAttribute="centerY" id="z31-e5-oMh"/>

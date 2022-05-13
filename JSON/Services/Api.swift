@@ -21,11 +21,13 @@ class RapidApi {
 
         let fName = firstName
             .applyingTransform(.toLatin, reverse: false)?
-            .applyingTransform(.stripDiacritics, reverse: false) ?? ""
+            .applyingTransform(.stripDiacritics, reverse: false)?
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         
         let sName = secondName
             .applyingTransform(.toLatin, reverse: false)?
-            .applyingTransform(.stripDiacritics, reverse: false) ?? ""
+            .applyingTransform(.stripDiacritics, reverse: false)?
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         
         let urlString = "\(host)?sname=\(fName)&fname=\(sName)"
             
@@ -65,7 +67,9 @@ class RapidApi {
     
     private func getRawData(closure:  @escaping (Data?) -> ()) {
         
-        guard let urlAPI = urlAPI else {return}
+        guard let urlAPI = urlAPI else {
+            closure(nil)
+            return}
         
         let request = NSMutableURLRequest(
             url: urlAPI,
