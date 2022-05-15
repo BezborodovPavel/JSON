@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var result: ResponseResult?
     
     @IBAction func calculateButtonPress() {
-     
+        
         guard checkNames() else {return}
         
         let api = RapidApi(firstName: firstNameField.text!, secondName: secondNameField.text!) //Так как только что проверили на nil в методе checkNames() можно быть увереным в содержимом и извлекать принудительно
@@ -25,19 +25,23 @@ class ViewController: UIViewController, UITextFieldDelegate {
         view.alpha = 0.5
         api.sendRequest { responseResult in
             
-            if responseResult == nil {
+            switch responseResult{
+                
+            case let .success(responseResult):
+                self.result = responseResult
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "segueToResult", sender: nil)
+                    self.activityIndicator.stopAnimating()
+                    self.view.alpha = 1
+                }
+                
+            case let .failure(error):
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     self.view.alpha = 1
-                    self.showAlert(title: "Ошибка", message: "Не удалось соединиться с сервером, попробуйте позднее", titleButton: "Ок")
+                    self.showAlert(title: "Ошибка", message: "\(error.localizedDescription) Не удалось соединиться с сервером, попробуйте позднее", titleButton: "Ок")
                 }
                 return
-            }
-            self.result = responseResult!
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "segueToResult", sender: nil)
-                self.activityIndicator.stopAnimating()
-                self.view.alpha = 1
             }
         }
     }
@@ -168,8 +172,8 @@ extension ViewController {
     
     private func setupToolBar() {
         
-        addCustomToolBar(for: firstNameField, hints: Hints.manHints)
-        addCustomToolBar(for: secondNameField, hints: Hints.womanHints)
+        addCustomToolBar(for: firstNameField, hints: DataManager.shared.manHints)
+        addCustomToolBar(for: secondNameField, hints: DataManager.shared.womanHints)
         
     }
     

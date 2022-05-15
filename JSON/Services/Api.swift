@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+enum NetworkError: Error {
+    case invaliddURL
+    case noData
+    case decodingError
+}
+
 class RapidApi {
     
     private let host = "https://love-calculator.p.rapidapi.com/getPercentage"
@@ -48,27 +54,27 @@ class RapidApi {
         ]
     }
     
-    func sendRequest(closure:  @escaping (ResponseResult?) -> ()) {
+    func sendRequest(closure:  @escaping (Result<ResponseResult, NetworkError>) -> ()) {
         
-        getRawData { rawData in
+        getRawData { resultRawData in
             
-            if rawData == nil {
-                closure(nil)
-                return
+            switch resultRawData {
+            case let .failure(error):
+                closure(.failure(error))
+                
+            case let .success(rawData):
+                guard let responeResult = self.decodeDataToResponseResult(data: rawData) else {
+                    closure(.failure(.decodingError))
+                    return}
+                closure(.success(responeResult))
             }
-            
-            guard let responeResult = self.decodeDataToResponseResult(data: rawData!) else {
-                closure(nil)
-                return}
-            closure(responeResult)
-            
         }
     }
     
-    private func getRawData(closure:  @escaping (Data?) -> ()) {
+    private func getRawData(closure:  @escaping (Result<Data, NetworkError>) -> ()) {
         
         guard let urlAPI = urlAPI else {
-            closure(nil)
+            closure(.failure(.invaliddURL))
             return}
         
         let request = NSMutableURLRequest(
@@ -81,11 +87,12 @@ class RapidApi {
         request.allHTTPHeaderFields = headers
     
         URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { ( data, response, error) -> Void in
-            if data == nil {
-                print(error?.localizedDescription ?? "Some error, without description")
+            guard let data = data  else {
+                closure(.failure(.noData))
+                return
             }
             
-            closure(data)
+            closure(.success(data))
             
         }).resume()
     }
