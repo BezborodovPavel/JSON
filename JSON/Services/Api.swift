@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import Alamofire
 
 enum NetworkError: Error {
     case invaliddURL
@@ -22,22 +22,23 @@ class RapidApi {
         "X-RapidAPI-Key": "d5b6ef208bmsh2fbf6edede06488p1882a5jsn90f0430aac13"
     ]
     private let firstName: String
+    private var firstNameEncoded: String {
+        firstName
+            .applyingTransform(.toLatin, reverse: false)?
+            .applyingTransform(.stripDiacritics, reverse: false)?
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+    }
+    
     private let secondName: String
+    private var secondNameEncoded: String {
+        secondName
+            .applyingTransform(.toLatin, reverse: false)?
+            .applyingTransform(.stripDiacritics, reverse: false)?
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+    }
+    
     private var urlAPI: URL? {
-
-        let fName = firstName
-            .applyingTransform(.toLatin, reverse: false)?
-            .applyingTransform(.stripDiacritics, reverse: false)?
-            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        
-        let sName = secondName
-            .applyingTransform(.toLatin, reverse: false)?
-            .applyingTransform(.stripDiacritics, reverse: false)?
-            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        
-        let urlString = "\(host)?sname=\(fName)&fname=\(sName)"
-            
-        return URL(string: urlString)
+        URL(string: "\(host)?sname=\(firstNameEncoded)&fname=\(secondNameEncoded)")
     }
     
     
@@ -54,6 +55,7 @@ class RapidApi {
         ]
     }
     
+    // MARK: URLSession
     func sendRequest(closure:  @escaping (Result<ResponseResult, NetworkError>) -> ()) {
         
         getRawData { resultRawData in
@@ -109,7 +111,33 @@ class RapidApi {
             return nil
         }
     }
-
+    
+    //MARK: Alamofire
+    func sendRequestAF(closure:  @escaping (Result<ResponseResult, NetworkError>) -> ()) {
+        
+        // Тут я не понял как сделать GET запрос без параметров но с Headers, на пустые, nil или
+        // отсутсвующие параметры возвращалась ошибка
+        AF.request(host, method: .get, parameters: ["sname":secondNameEncoded, "fname": firstNameEncoded], encoder: .urlEncodedForm, headers: HTTPHeaders(headers)).validate().responseData { dataResponse in
+            switch dataResponse.result {
+            case .success(let dataFromResponse):
+                do {
+                    
+                    // Так как пример учебный и нам надо получить сырой json для ручного парсинга. Метод
+                    // responseJson не используем так как он Depricated
+                    let jsonDataFromResponse = try JSONSerialization.jsonObject(with: dataFromResponse)
+                    guard let response = ResponseResult.getResult(from: jsonDataFromResponse) else {
+                        closure(.failure(.decodingError))
+                        return
+                    }
+                    closure(.success(response))
+                } catch {
+                    closure(.failure(.decodingError))
+                }
+            case .failure:
+                closure(.failure(.noData))
+            }
+        }
+    }
 }
 
 

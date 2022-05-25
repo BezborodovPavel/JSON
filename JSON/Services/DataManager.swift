@@ -14,8 +14,7 @@ struct DataManager {
     let womanHints = ["Зайка", "Солнышко", "Лучик"]
 
     private init() {
-    }
-    
+    }    
 }
 
 

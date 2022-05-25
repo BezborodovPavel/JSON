@@ -23,7 +23,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         activityIndicator.startAnimating()
         view.alpha = 0.5
-        api.sendRequest { responseResult in
+        api.sendRequestAF { responseResult in
             
             switch responseResult{
                 
@@ -39,7 +39,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     self.view.alpha = 1
-                    self.showAlert(title: "Ошибка", message: "\(error.localizedDescription) Не удалось соединиться с сервером, попробуйте позднее", titleButton: "Ок")
+                    self.showAlert(
+                        title: "Ошибка",
+                        message: "\(error.localizedDescription) Не удалось соединиться с сервером, попробуйте позднее",
+                        titleButton: "Ок")
                 }
                 return
             }
@@ -80,12 +83,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
         firstNameField.layer.borderColor = UIColor.systemPink.cgColor
         firstNameField.layer.borderWidth = 1.0
         firstNameField.layer.cornerRadius = 5
-        firstNameField.attributedPlaceholder = NSAttributedString(string: "Его имя", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 0.782, blue: 0.824, alpha: 1)])
+        firstNameField.attributedPlaceholder = NSAttributedString(
+            string: "Его имя",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor(
+                red: 1,
+                green: 0.782,
+                blue: 0.824,
+                alpha: 1)])
         
         secondNameField.layer.borderColor = UIColor.systemPink.cgColor
         secondNameField.layer.borderWidth = 1.0
         secondNameField.layer.cornerRadius = 5
-        secondNameField.attributedPlaceholder = NSAttributedString(string: "Её имя", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 1, green: 0.782, blue: 0.824, alpha: 1)])
+        secondNameField.attributedPlaceholder = NSAttributedString(
+            string: "Её имя",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor(
+                red: 1,
+                green: 0.782,
+                blue: 0.824,
+                alpha: 1)])
       
         setGradient()
     }
@@ -155,12 +170,22 @@ extension ViewController {
         
         let customToolBar = UIToolbar()
         
-        let titleButton = UIBarButtonItem(title: "Если забыли: ", style: .plain, target: self, action: nil)
+        let titleButton = UIBarButtonItem(
+            title: "Если забыли: ",
+            style: .plain,
+            target: self,
+            action: nil
+        )
         let flexibleSpace = UIBarButtonItem.flexibleSpace()
         var buttons: [UIBarButtonItem] =  [titleButton, flexibleSpace]
         
         for hint in hints {
-            let hintButton = UIBarButtonItem(title: hint, style: .done, target: self, action: #selector(hintSelected(sender:)))
+            let hintButton = UIBarButtonItem(
+                title: hint,
+                style: .done,
+                target: self,
+                action: #selector(hintSelected(sender:))
+            )
             buttons.append(hintButton)
         }
         
