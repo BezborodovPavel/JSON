@@ -117,7 +117,10 @@ class RapidApi {
         
         // Тут я не понял как сделать GET запрос без параметров но с Headers, на пустые, nil или
         // отсутсвующие параметры возвращалась ошибка
-        AF.request(host, method: .get, parameters: ["sname":secondNameEncoded, "fname": firstNameEncoded], encoder: .urlEncodedForm, headers: HTTPHeaders(headers)).validate().responseData { dataResponse in
+//        AF.request(host, method: .get, parameters: ["sname":secondNameEncoded, "fname": firstNameEncoded], encoder: .urlEncodedForm, headers:
+        AF.request(host, method: .get, encoder: .urlEncodedForm, headers: HTTPHeaders(headers))
+            .validate()
+            .responseData { dataResponse in
             switch dataResponse.result {
             case .success(let dataFromResponse):
                 do {

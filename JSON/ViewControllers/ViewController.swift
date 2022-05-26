@@ -18,7 +18,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func calculateButtonPress() {
         
         guard checkNames() else {return}
-        
         let api = RapidApi(firstName: firstNameField.text!, secondName: secondNameField.text!) //Так как только что проверили на nil в методе checkNames() можно быть увереным в содержимом и извлекать принудительно
         
         activityIndicator.startAnimating()
